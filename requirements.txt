@@ -2,3 +2,5 @@ boto3
 cloudpathlib
 python-dotenv
 PyPDF2
+matplotlib
+nltk
