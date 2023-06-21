@@ -2,6 +2,7 @@ boto3
 cloudpathlib
 python-dotenv
 pdfplumber
+PyPDF2
 matplotlib
 nltk
 wordcloud
