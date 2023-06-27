@@ -3,3 +3,5 @@ flask-socketio
 python-dotenv
 gevent
 gevent-websocket
+llama-index
+langchain

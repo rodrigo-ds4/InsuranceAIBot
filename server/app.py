@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_socketio import SocketIO, send
+import answer
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'blah' 
