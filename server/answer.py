@@ -1,4 +1,4 @@
-''' from llama_index import SimpleDirectoryReader, GPTListIndex, readers, GPTSimpleVectorIndex, LLMPredictor, PromptHelper, ServiceContext
+from llama_index import SimpleDirectoryReader, GPTListIndex, readers, GPTSimpleVectorIndex, LLMPredictor, PromptHelper, ServiceContext
 from langchain import OpenAI
 import sys
 import os
@@ -33,18 +33,17 @@ def construct_index(directory_path):
 
     return index
 
-def ask_ai(question):
+def ask(question):
     index = GPTSimpleVectorIndex.load_from_disk('index.json')
     while True: 
-        query = input(question)
-        response = index.query(query)
+        
+        response = index.query(question)
         print(response.response)
 
 
 
 construct_index("policy_text.txt")
 
-ask_ai("Que dice la poliza de accidentes personales en el articulo dos?") '''
 
 '''import os
 import openai
@@ -68,5 +67,4 @@ completions = response['choices']
 for completion in completions:
     generated_text = completion['text']
     print(generated_text)'''
-
 
