@@ -72,4 +72,3 @@ def ask(question):
         print(generated_text)
     
     return generated_text
-
