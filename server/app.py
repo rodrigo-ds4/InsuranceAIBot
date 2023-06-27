@@ -10,8 +10,8 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 def handle_message(message):
     print('received message: ' + message)
     answer = ask(message)
-    send(message, broadcast=True)
-    send(answer, broadcast=True)
+    send(message + answer, broadcast=True)
+    #send(answer, broadcast=True)
 
 if __name__ == '__main__':
     socketio.run(app)

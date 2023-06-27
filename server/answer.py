@@ -1,4 +1,4 @@
-from llama_index import SimpleDirectoryReader, GPTListIndex, readers, GPTSimpleVectorIndex, LLMPredictor, PromptHelper, ServiceContext
+""" from llama_index import SimpleDirectoryReader, GPTListIndex, readers, GPTSimpleVectorIndex, LLMPredictor, PromptHelper, ServiceContext
 from langchain import OpenAI
 import sys
 import os
@@ -42,10 +42,10 @@ def ask(question):
 
 
 
-construct_index("policy_text.txt")
+construct_index("policy_text.txt") """
 
 
-'''import os
+import os
 import openai
 from dotenv import load_dotenv
 
@@ -53,18 +53,23 @@ load_dotenv()
 
 openai.api_key = os.environ.get("OPENAI_API_KEY")
 
-prompt = "hola que tal?"
+def ask(question):
+    prompt = question
 
-response = openai.Completion.create(
-    engine="davinci",  # Elige el motor de GPT (p. ej., "davinci" o "text-davinci-003")
-    prompt=prompt,
-    max_tokens=50,  # Número máximo de tokens para la respuesta generada
-    n=1,  # Número de respuestas a generar
-    stop=None,  # Opcional: texto para detener la respuesta generada
-)
+    response = openai.Completion.create(
+        engine="davinci",  # Elige el motor de GPT (p. ej., "davinci" o "text-davinci-003")
+        prompt=prompt,
+        max_tokens=50,  # Número máximo de tokens para la respuesta generada
+        n=1,  # Número de respuestas a generar
+        stop=None,  # Opcional: texto para detener la respuesta generada
+    )
 
-completions = response['choices']
-for completion in completions:
-    generated_text = completion['text']
-    print(generated_text)'''
+    completions = response['choices']
+
+    generated_text= ""
+    for completion in completions:
+        generated_text = completion['text']
+        print(generated_text)
+    
+    return generated_text
 
