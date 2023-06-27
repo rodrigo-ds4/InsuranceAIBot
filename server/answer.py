@@ -1,4 +1,4 @@
-from llama_index import SimpleDirectoryReader, GPTListIndex, readers, GPTSimpleVectorIndex, LLMPredictor, PromptHelper, ServiceContext
+'''from llama_index import SimpleDirectoryReader, GPTListIndex, readers, GPTSimpleVectorIndex, LLMPredictor, PromptHelper, ServiceContext
 from langchain import OpenAI
 import sys
 import os
@@ -36,16 +36,15 @@ def construct_index(directory_path):
 def ask(question):
     index = GPTSimpleVectorIndex.load_from_disk('index.json')
     while True: 
-        
         response = index.query(question)
         print(response.response)
 
 
 
-construct_index("policy_text.txt")
+construct_index("policy_text.txt")'''
 
 
-'''import os
+import os
 import openai
 from dotenv import load_dotenv
 
@@ -66,5 +65,4 @@ response = openai.Completion.create(
 completions = response['choices']
 for completion in completions:
     generated_text = completion['text']
-    print(generated_text)'''
-
+    print(generated_text)
