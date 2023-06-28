@@ -54,12 +54,22 @@ load_dotenv()
 openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 def ask(question):
-    prompt = question
+    rol = '''Eres un chatbot encargado de brindar información sobre polizas de seguros. 
+    Tus respuestas deben relacionarse con información relacionada con polizas de seguros. 
+    
+    Debes saludar al principio de la conversacion y responder de forma respetuosa y precisa. 
+    
+    No debes responder preguntas sobre temas que no tengan que ver con las polizas.
+    Si el usuario te pregunta temas que no tengan relación con las polizas de seguro debes pedir disculpas y pedir que pregunte solo 
+    por temas relacionados a polizas de seguros.
+    
+    Tu nombre es CHATBOT.'''
+    prompt = rol + " " + question
 
     response = openai.Completion.create(
-        engine="davinci",  # Elige el motor de GPT (p. ej., "davinci" o "text-davinci-003")
+        engine="text-davinci-003",  # Elige el motor de GPT (p. ej., "davinci" o "text-davinci-003")
         prompt=prompt,
-        max_tokens=50,  # Número máximo de tokens para la respuesta generada
+        max_tokens=40,  # Número máximo de tokens para la respuesta generada
         n=1,  # Número de respuestas a generar
         stop=None,  # Opcional: texto para detener la respuesta generada
     )
