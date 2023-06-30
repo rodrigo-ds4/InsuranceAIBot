@@ -7,8 +7,8 @@ let socket = io.connect(endpoint);
 
 const App = () => {
   const [newQuestion, sendNewQuestion] = useState("");
-  const [chatAnswers, saveChatAnswer] = useState(["were found across the internet in phrases including", "chidas... 2 co borviver co el s","were found across the internet in phrases including", "chidas... 2 co borviver co el s"]);
-  const [userQuestions, saveUserQuestions] = useState(["hola","cómo estás","hola","cómo estás"]);
+  const [chatAnswers, saveChatAnswer] = useState([]);
+  const [userQuestions, saveUserQuestions] = useState([]);
 
   socket.on("message", (msg) => {
     saveChatAnswer([...chatAnswers, msg]);
@@ -19,12 +19,13 @@ const App = () => {
   };
 
   const sendQuestion = () => {
-    socket.emit("message", newQuestion);
+    if (newQuestion !== "") {
+      socket.emit("message", newQuestion);
     sendNewQuestion("");
     saveUserQuestions([...userQuestions, newQuestion]);
-  };
 
-  console.log("aca", chatAnswers)
+    }
+  };
 
   return (
     <div>

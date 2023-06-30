@@ -27,26 +27,28 @@ const ChatView = ({
 
   return (
     <div className={styles.chat}>
-      <div id="chatWindow" ref={chatWindowRef} className={styles.chat_wrap}>
-        <ChatBubble
-          content={
-            "Hola, soy el asistente virtual de Seguros. ¿En qué te puedo ayudar?"
-          }
-        />
-        {questions.map((question, i) => (
-          <div key={`answer${i}`}>
-            <ChatBubble role="user" content={question} />
-            <ChatBubble content={answers[i]} />
-          </div>
-        ))}
-      </div>
-      <div>
-        <input
-          type="text"
-          onChange={(e) => handleChange(e)}
-          value={newQuestion}
-        />
-        <input type="button" onClick={handleClick} value="Send" />
+      <div className={styles.chat_wrap}>
+        <div className={styles.chat_window} ref={chatWindowRef}>
+          <ChatBubble
+            content={
+              "Hola! Soy Nicolle, la asistente virtual de Seguros. ¿En qué te puedo ayudar?"
+            }
+          />
+          {questions.map((question, i) => (
+            <div key={`answer${i}`}>
+              <ChatBubble role="user" content={question} />
+              <ChatBubble content={answers[i]} />
+            </div>
+          ))}
+        </div>
+        <div className={styles.chat_field}>
+          <input
+            type="text"
+            onChange={(e) => handleChange(e)}
+            value={newQuestion}
+          />
+          <input type="button" onClick={handleClick} value="⌲" />
+        </div>
       </div>
     </div>
   );
