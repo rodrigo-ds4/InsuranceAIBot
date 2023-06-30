@@ -1,0 +1,32 @@
+.bubble {
+  &_chatbot {
+    width: 100%;
+    display: flex;
+    margin: 15px 0;
+    justify-content: flex-start;
+    &_wrap {
+      width: fit-content;
+      max-width: 75%;
+      padding: 0 20px;
+      border-radius: 15px 15px 15px 0;
+      background-color: #5a6676;
+      color: #ecf2f8;
+      font-size: 1.1rem;
+      margin-left: 15px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    }
+  }
+  &_user {
+    @extend .bubble_chatbot;
+    justify-content: flex-end;
+    &_wrap {
+      @extend .bubble_chatbot_wrap;
+      border-radius: 15px 15px 0 15px;
+      background-color: #7de38c;
+      background: rgb(2,0,36);
+      background: linear-gradient(150deg, #7de38c 0%, #00d4ff 100%);
+      color: #0d1117;
+      margin-right: 15px;
+    }
+  }
+}
