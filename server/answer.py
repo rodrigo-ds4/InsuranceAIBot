@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 openai.api_key = os.environ.get("OPENAI_API_KEY")
-file_path = "policy_text.txt"  # set the p
+file_path = "policy_text.txt"  # set the path
 file_content = ""
 
 with open(file_path, "r") as file:
