@@ -1,0 +1,13 @@
+.loader {
+  margin: 23px;
+  width: 12px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  animation: d5 1s infinite linear alternate;
+}
+@keyframes d5 {
+    0%  {box-shadow: 20px 0 white, -20px 0 #989898;background: white }
+    33% {box-shadow: 20px 0 white, -20px 0 #989898;background: #989898}
+    66% {box-shadow: 20px 0 #989898,-20px 0 white; background: #989898}
+    100%{box-shadow: 20px 0 #989898,-20px 0 white; background: white }
+}
