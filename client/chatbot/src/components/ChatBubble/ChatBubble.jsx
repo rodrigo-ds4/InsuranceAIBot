@@ -1,3 +1,4 @@
+import LoadingChat from "../LoadingChat/LoadingChat";
 import styles from "./styles.module.scss";
 
 const ChatBubble = ({ content , role = "chatbot" }) => {
@@ -10,7 +11,7 @@ const ChatBubble = ({ content , role = "chatbot" }) => {
             : styles.bubble_user_wrap
         }
       >
-        <p>{content}</p>
+        {content ? <p>{content}</p> : <LoadingChat />}
       </div>
     </div>
   );
