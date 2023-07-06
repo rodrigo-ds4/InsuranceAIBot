@@ -11,8 +11,12 @@ last_answer = ""
 
 @socketio.on('message')
 def handle_message(message):
+    global last_answer
+    global last_question
     print('received message: ' + message)
     answer = ask(message, code, last_question, last_answer)
+    last_answer = answer
+    last_question = message
     send(answer, broadcast=True)
 
 @socketio.on('action')
@@ -23,8 +27,8 @@ def handle_message(action):
         global last_question
         global last_answer
         code = action
-        last_question = ""
-        last_answer = ""
+        last_question = "hola"
+        last_answer = "hola"
         send("Conversemos sobra la póliza " + action[3:] + ", qué te gustaría saber?", broadcast=True)
     elif action[:3] == "NEW":
         send("Generemos una nueva poliza. Indicame que requerimientos tienes? ", broadcast=True)

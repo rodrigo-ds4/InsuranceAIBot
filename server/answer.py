@@ -16,10 +16,10 @@ print("Directorio actual:", current_directory)
 openai.api_key = os.environ['OPENAI_API_KEY']
 print(os.environ['OPENAI_API_KEY'])
 
-def ask(question, code, last_q, last_a):
+def ask(question, code, last_q="hola", last_a="hola"):
     embedding = OpenAIEmbeddings()
     print("code: " + code)
-
+    print(last_a)
     #history_text = "Historial de chat: \n"
     #for chat in chat_history:
     #    history_text += "pregunta: " + chat["question"] + "\n"
@@ -32,7 +32,7 @@ def ask(question, code, last_q, last_a):
         #embedding = embedding
     ).from_loaders([loader])
     history.add_user_message(question)
-    question = "Mi nombre es Nicolle, bot asistente de seguros. Historial: Pregunta anterior del usuario fue: " + last_q + ". Respuesta: " + last_a +". Pregunta nueva del usuario:" + question
+    question = "Mi nombre es Nicolle, bot asistente de seguros. Historial: Pregunta anterior del usuario fue: " + last_q + ". Respuesta: " + last_a +". Pregunta:" + question
     print(question)
     answer = index.query(question)
     history.add_ai_message(answer)
