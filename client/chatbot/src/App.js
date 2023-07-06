@@ -9,7 +9,7 @@ const App = () => {
   const [chatAnswers, saveChatAnswer] = useState([]);
   const [userQuestions, saveUserQuestions] = useState([]);
   const [showOptions, setShowOptions] = useState(true);
-
+  
   socket.on("message", (msg) => {
     saveChatAnswer([...chatAnswers, msg]);
   });
@@ -30,7 +30,7 @@ const App = () => {
     console.log("selected option", code);
     setShowOptions(false);
     saveUserQuestions([...userQuestions, name]);
-    socket.emit("message", name);
+    socket.emit("action", code[0]);
   };
 
   const insuranceOptions = [

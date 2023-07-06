@@ -1,42 +1,28 @@
-import os
-import openai
 from dotenv import load_dotenv
+import openai
+import os
+from langchain.document_loaders import TextLoader, PyPDFLoader
+from langchain.text_splitter import CharacterTextSplitter, TokenTextSplitter
+from langchain.embeddings.openai import OpenAIEmbeddings
+
+from langchain.schema import Document
+
+from langchain.indexes import VectorstoreIndexCreator
 
 load_dotenv()
+current_directory = os.getcwd()
+print("Directorio actual:", current_directory)
+openai.api_key = os.environ['OPENAI_API_KEY']
+print(os.environ['OPENAI_API_KEY'])
 
-openai.api_key = os.environ.get("OPENAI_API_KEY")
-file_path = "policy_text.txt"  # set the path
-file_content = ""
+def ask(question, code):
+    embedding = OpenAIEmbeddings()
+    print("code: " + code)
+    loader = PyPDFLoader("raw-dataset/" + code + ".pdf")
 
-with open(file_path, "r") as file:
-    file_content = file.read()
-
-def ask(question):
-    rol = '''Eres un chatbot encargado de brindar información sobre polizas de seguros. 
-    Tus respuestas deben relacionarse con información relacionada con polizas de seguros. 
-    
-    Debes responder de forma respetuosa y precisa. 
-    
-    No debes responder preguntas sobre temas que no tengan que ver con las pólizas.
-    Si el usuario te pregunta temas que no tengan relación con las polizas de seguro debes pedir disculpas y pedir que pregunte solo 
-    por temas relacionados a polizas de seguros.
-    
-    Tu nombre es Nicolle. Presta atención a la información de las polizas: '''
-    prompt = rol + " " + file_content + "pregunta: " + question
-
-    response = openai.Completion.create(
-        engine="text-davinci-003",  # Set the GPT engine such as "davinci" or "text-davinci-003"
-        prompt=prompt,
-        max_tokens=50,  # Max number of tokens in the answer
-        n=1,  # Number of answers
-        stop=".",  # Optional: set the last word of the conversation.
-    )
-
-    completions = response['choices']
-
-    generated_text= ""
-    for completion in completions:
-        generated_text = completion['text']
-        print(generated_text)
-
+    index = VectorstoreIndexCreator(
+        text_splitter = CharacterTextSplitter(chunk_size=500, chunk_overlap=20),
+        embedding = OpenAIEmbeddings()
+    ).from_loaders([loader])
+    generated_text = index.query(question)
     return generated_text
