@@ -1,39 +1,37 @@
 import pandas as pd
 import pickle
-import re
-
-def eliminar_palabras(texto):
-    palabras_a_eliminar = ['de', 'en', 'la', "La", "los", "Los", "Las", "las", "el", "El"]
-    patron = r'\b(?:{})\b'.format('|'.join(palabras_a_eliminar))
-    texto_sin_palabras = re.sub(patron, '', texto, flags=re.IGNORECASE)
-    return texto_sin_palabras
-
 
 # Open pickle file and load it into a variable
 df = pickle.load(open('df.pickle', 'rb'))
 
 # Show the resulting variable
-print(df)
+print(df.columns)
 
-# Crear una lista para almacenar el contenido formateado
-formatted_content = []
+prev_policy_title = None
+prev_policy_code = None
+text = ''
 
-# Iterar sobre cada fila del DataFrame
-for _, row in df.iterrows():
-    policy_name = row['Policy_Name']
-    article_name = row['Article_Name']
-    article_content = row['Text']
+# Iterate thru the rows 
+for index, row in df.iterrows():
+    # set titles
+    if row['Policy_Title'] != prev_policy_title or row['Policy_Code'] != prev_policy_code:
+        text += 'Policy Title: ' + ' '.join(row['Policy_Title']) + '\n'
+        text += 'Policy Code: ' + ' '.join(row['Policy_Code']) + '\n'
 
-    # Formatear el contenido
-    formatted_text = f"Policy Name: {policy_name}\nArticle Name: {article_name}\n{article_content}\n"
+        prev_policy_title = row['Policy_Title']
+        prev_policy_code = row['Policy_Code']
 
-    # Agregar el contenido formateado a la lista
-    formatted_content.append(formatted_text)
+    # set article name and content
+    text += 'Article Name: ' + ' '.join(row['Article_Name']) + '\n'
+    text += 'Article Content: ' + ' '.join(row['Article_Content']) + '\n\n'
 
-# Unir todos los elementos de la lista en un solo string
-text_data = ''.join(formatted_content)
-
-text_data=eliminar_palabras(text_data)
-# Guardar el texto en un archivo de texto
 with open('policy_text.txt', 'w') as file:
-    file.write(text_data)
+    file.write(text)
+
+# Split text into words
+words = text.split()
+
+# Count the amount of words
+num_words = len(words)
+
+print(f"the text contains {num_words} words.")
