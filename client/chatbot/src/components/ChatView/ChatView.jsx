@@ -1,5 +1,7 @@
 import { useRef, useEffect, useLayoutEffect } from "react";
 import ChatBubble from "../ChatBubble/ChatBubble";
+import SearchIcon from "../SearchIcon/SearchIcon";
+import NewPolicyIcon from "../NewPolicyIcon/NewPolicyIcon";
 import styles from "./styles.module.scss";
 
 const ChatView = ({
@@ -10,6 +12,8 @@ const ChatView = ({
   handleChange,
   handleClick,
   handleOption,
+  handleNewPolicy,
+  handleSearch,
   disabled,
 }) => {
   const chatWindowRef = useRef(null);
@@ -31,6 +35,25 @@ const ChatView = ({
   return (
     <div className={styles.chat}>
       <div className={styles.chat_wrap}>
+        <div className={styles.chat_actions}>
+          <h1>Chatbot</h1>
+          <div>
+            <button
+              name="New Policy"
+              className={styles.chat_actions_button}
+              onClick={handleNewPolicy}
+            >
+              <NewPolicyIcon />
+            </button>
+            <button
+              name="Search in Google"
+              className={styles.chat_actions_button}
+              onClick={handleSearch}
+            >
+              <SearchIcon />
+            </button>
+          </div>
+        </div>
         <div className={styles.chat_window} ref={chatWindowRef}>
           <ChatBubble
             content={
@@ -40,7 +63,13 @@ const ChatView = ({
           {disabled && (
             <div className={styles.chat_options}>
               {options.map((option, i) => (
-                <button className={styles.chat_options_button} key={`option${i}`} onClick={() => handleOption(option.name, option.code)}>{option.name}</button>
+                <button
+                  className={styles.chat_options_button}
+                  key={`option${i}`}
+                  onClick={() => handleOption(option.name, option.code)}
+                >
+                  {option.name}
+                </button>
               ))}
             </div>
           )}
