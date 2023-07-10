@@ -1,7 +1,7 @@
 import { useState } from "react";
 import io from "socket.io-client";
 import ChatView from "./components/ChatView/ChatView";
-let endpoint = "http://localhost:5000";
+let endpoint = "http://127.0.0.1:5000";
 let socket = io.connect(endpoint);
 
 const App = () => {
@@ -65,18 +65,16 @@ const App = () => {
   ];
 
   return (
-    <div>
-      <ChatView
-        options={insuranceOptions}
-        questions={userQuestions}
-        answers={chatAnswers}
-        newQuestion={newQuestion}
-        handleChange={(e) => inputQuestion(e)}
-        handleClick={() => sendQuestion()}
-        handleOption={(name, code) => selectedOption(name, code)}
-        disabled={showOptions}
-      />
-    </div>
+    <ChatView
+      options={insuranceOptions}
+      questions={userQuestions}
+      answers={chatAnswers}
+      newQuestion={newQuestion}
+      handleChange={(e) => inputQuestion(e)}
+      handleClick={() => sendQuestion()}
+      handleOption={(name, code) => selectedOption(name, code)}
+      disabled={showOptions}
+    />
   );
 };
 
