@@ -14,7 +14,6 @@ history = ChatMessageHistory()
 current_directory = os.getcwd()
 print("Directorio actual:", current_directory)
 openai.api_key = os.environ['OPENAI_API_KEY']
-print(os.environ['OPENAI_API_KEY'])
 
 def ask(question, code, last_q="hola", last_a="hola"):
     embedding = OpenAIEmbeddings()
