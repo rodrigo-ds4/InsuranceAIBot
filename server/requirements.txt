@@ -5,3 +5,5 @@ gevent
 gevent-websocket
 llama-index
 langchain
+chromadb
+pypdf 
