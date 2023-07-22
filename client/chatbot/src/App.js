@@ -33,14 +33,6 @@ const App = () => {
     socket.emit("action", code[0]);
   };
 
-  const createPolicy = () => {
-    console.log("new policy")
-  }
-
-  const searchPolicy = () => {
-    console.log("search google")
-  }
-
   const insuranceOptions = [
     {
       name: "Accidentes Personales / Reembolso Gastos Médicos ",
@@ -81,8 +73,6 @@ const App = () => {
       handleChange={(e) => inputQuestion(e)}
       handleClick={() => sendQuestion()}
       handleOption={(name, code) => selectedOption(name, code)}
-      handleNewPolicy={() => createPolicy()}
-      handleSearch={() => searchPolicy()}
       disabled={showOptions}
     />
   );

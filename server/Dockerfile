@@ -1,4 +1,3 @@
-# Build Flask
 FROM python:3.9 as server
 
 WORKDIR /

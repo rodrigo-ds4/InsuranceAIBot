@@ -37,13 +37,8 @@ def handle_message(action):
     else:
         print("action " + action + " is not available.")
         send("error", broadcast=True)
-    #answer = ask(message)
 
 if __name__ == '__main__':
-    # Get the server port
-    port = 5001  # Default port
-
-    # Print server information
     print(f"Server running on http://localhost:{port}/")
 
     socketio.run(app, host='0.0.0.0', port=5001)
