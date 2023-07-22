@@ -1,6 +1,7 @@
 # Insurance Chatbot
 
-![Chatbot Demo](link-to-demo.gif)
+![Chatbot Demo](https://github.com/rotpando/InsuranceAIBot/assets/32284071/d6e0abe7-40fc-4403-bb44-2f0ac262f510)
+
 
 ## Table of Contents
 
@@ -8,8 +9,6 @@
 - [Technologies](#technologies)
 - [Getting Started](#getting-started)
 - [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Description
 
