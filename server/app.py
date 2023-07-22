@@ -41,9 +41,9 @@ def handle_message(action):
 
 if __name__ == '__main__':
     # Get the server port
-    port = 5000  # Default port
+    port = 5001  # Default port
 
     # Print server information
     print(f"Server running on http://localhost:{port}/")
 
-    socketio.run(app, host='0.0.0.0', port=port)
+    socketio.run(app, host='0.0.0.0', port=5001)

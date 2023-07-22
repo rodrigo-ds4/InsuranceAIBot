@@ -6,4 +6,5 @@ gevent-websocket
 llama-index
 langchain
 chromadb
-pypdf 
+pypdf
+HNSWLIB

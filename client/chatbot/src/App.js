@@ -1,7 +1,7 @@
 import { useState } from "react";
 import io from "socket.io-client";
 import ChatView from "./components/ChatView/ChatView";
-let endpoint = "http://127.0.0.1:5000";
+let endpoint = "http://localhost:5001";
 let socket = io.connect(endpoint);
 
 const App = () => {
