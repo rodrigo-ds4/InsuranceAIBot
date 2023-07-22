@@ -1,6 +1,6 @@
 # Insurance Chatbot
 
-![Chatbot Demo](https://github.com/rotpando/InsuranceAIBot/assets/32284071/d6e0abe7-40fc-4403-bb44-2f0ac262f510)
+![Chatbot Demo](/chatbot.gif)
 
 
 ## Table of Contents
