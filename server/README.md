@@ -36,9 +36,14 @@ server/
     ├── prompt.py     # persona + injection-resilient system prompt
     ├── chain.py      # RAG orchestration (retrieve → prompt → answer → memory)
     ├── evaluate.py   # RAGAS faithfulness scoring (best-effort)
+    ├── eval_batch.py # BATCH evaluation over tests/test_dataset.csv
     └── memory/
         ├── shortterm.py  # rolling window of last N turns (per-instant)
         └── longterm.py   # persistent conversation facts in Chroma
+
+tests/
+├── test_unit.py        # unit tests (guardrails + memory)
+└── test_dataset.csv    # evaluation dataset for eval_batch.py
 ```
 
 ## Setup
@@ -79,7 +84,31 @@ The client connects via WebSocket on port 5000.
 
 ## Evaluations
 
-Run RAGAS faithfulness directly (requires a `.env` with an API key for the evaluator):
+Two ways to measure quality, both use **RAGAS faithfulness** and the cheap
+evaluator model.
+
+### 1. Batch (recommended)
+
+Run the whole RAG over `tests/test_dataset.csv` and get a per-question score
+plus an average. Use it as a regression signal after changing retrieval/prompt:
+
+```bash
+python src/eval_batch.py                       # default dataset
+python src/eval_batch.py --out report.json     # save a JSON report
+```
+
+Dataset format (`tests/test_dataset.csv`):
+
+```csv
+question,source,reference
+"¿Qué cubre el seguro por accidentes?","POL120190177.pdf","Accidentes Personales"
+```
+
+- `question` — what gets asked (and grounded by retrieval).
+- `source` — the policy PDF the question is about (`None`/empty → search all).
+- `reference` — human-readable expected grounding (informational).
+
+### 2. Single answer
 
 ```bash
 python - <<'EOF'
