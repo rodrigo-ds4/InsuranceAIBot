@@ -4,6 +4,7 @@ __pycache__/
 *.pickle
 index.json
 policy2.txt
+report.json
 .DS_Store
 
 # Vector DB + embeddings cache (regenerate with python src/ingest.py)
