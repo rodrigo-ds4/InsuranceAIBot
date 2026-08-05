@@ -1,9 +1,23 @@
-flask
-flask-socketio
-python-dotenv
-gevent
-gevent-websocket
-llama-index
-langchain
-chromadb
-pypdf 
+# Core frameworks
+flask>=3.0
+flask-socketio>=5.3
+python-dotenv>=1.0
+pypdf>=4.2
+
+# LangChain (modern, 0.3.x)
+langchain-core>=0.3
+langchain>=0.3
+langchain-text-splitters>=0.3
+langchain-groq>=1.0
+langchain-huggingface>=0.1
+langchain-chroma>=0.1
+# RAGAS 0.4 still imports from langchain_community.chat_models.vertexai (sunset).
+langchain-community==0.3.31
+
+# Vector DB + embeddings
+chromadb>=0.5.3
+sentence-transformers>=3.0
+
+# Evaluation
+ragas>=0.2
+datasets>=2.19

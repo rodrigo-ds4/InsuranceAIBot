@@ -1,49 +1,79 @@
+"""Flask + SocketIO server. Gates on config and wires the RAG chain.
+
+Frontend protocol:
+- 'message' events carry chat questions (answered via the RAG chain).
+- 'action'  events carry UI actions: policy selection prefixed "POL###".
+  Selecting a policy restricts subsequent retrieval to that document.
+"""
+import logging
+
 from flask import Flask
 from flask_socketio import SocketIO, send
-from answer import ask
+
+from config import CORS_ALLOWED_ORIGINS, PORT, SECRET_KEY
+from src.chain import ask
+from src.guardrails import GuardrailsError
+from src.memory.shortterm import ShortTermMemory
+from src.vectorstore import get_policy_retriever
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("app")
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'prueba' 
-socketio = SocketIO(app, cors_allowed_origins='*')
-code = ""
-last_question = ""
-last_answer = ""
+app.config["SECRET_KEY"] = SECRET_KEY
+socketio = SocketIO(app, cors_allowed_origins=CORS_ALLOWED_ORIGINS)
 
-@socketio.on('message')
-def handle_message(message):
-    global last_answer
-    global last_question
-    print('received message: ' + message)
-    answer = ask(message, code, last_question, last_answer)
-    last_answer = answer
-    last_question = message
-    send(answer, broadcast=True)
+# Per-process state: short-term memory + currently selected policy.
+short_memory = ShortTermMemory()
+current_source = None  # e.g. "POL320130223.pdf"
 
-@socketio.on('action')
-def handle_message(action):
-    print('action: ' + action)
-    if action[:3] == "POL":
-        global code
-        global last_question
-        global last_answer
-        code = action
-        last_question = "hola"
-        last_answer = "hola"
-        send("Conversemos sobra la póliza " + action[3:] + ", qué te gustaría saber?", broadcast=True)
-    elif action[:3] == "NEW":
-        send("Generemos una nueva poliza. Indicame que requerimientos tienes? ", broadcast=True)
-    elif action[:3] == "FND":
-        send("Voy a buscar polizas en Google, indicame que tipo de poliza buscas.", broadcast=True)
+
+def _answer(question: str) -> str:
+    global current_source
+    answer, _ = ask(
+        question=question,
+        retriever=get_policy_retriever(source=current_source),
+        short_memory=short_memory,
+        user_id="default",
+        evaluate_answer=False,  # flip to True to score each turn
+    )
+    return answer
+
+
+@socketio.on("action")
+def handle_action(action):
+    global current_source
+    if not isinstance(action, str):
+        send("error")
+        return
+    act = action.strip().upper()
+    if act.startswith("POL"):
+        # normalize UI code "POL320100223" -> "<code>.pdf"
+        current_source = act + ".pdf"
+        short_memory.clear()
+        send(f"Conversemos sobre la póliza {act[3:]}. ¿Qué querés saber?")
+    elif act.startswith("NEW"):
+        send("Quiero generar una nueva póliza. Contame qué cobertura necesitás.")
+    elif act.startswith("FND"):
+        send("Te ayudo a buscar una póliza. ¿Cuál te interesa?")
     else:
-        print("action " + action + " is not available.")
-        send("error", broadcast=True)
-    #answer = ask(message)
+        send("error")
 
-if __name__ == '__main__':
-    # Get the server port
-    port = 5000  # Default port
 
-    # Print server information
-    print(f"Server running on http://localhost:{port}/")
+@socketio.on("message")
+def handle_message(data):
+    if not isinstance(data, str) or not data.strip():
+        send("Escribe una pregunta válida.")
+        return
+    try:
+        send(_answer(data))
+    except GuardrailsError as e:
+        send(f"No pude procesar eso: {e}")
+    except Exception:  # noqa: BLE001 - keep the chat alive
+        logger.exception("chat error")
+        send("Lo siento, ocurrió un error procesando tu pregunta.")
 
-    socketio.run(app, host='0.0.0.0', port=port)
+
+if __name__ == "__main__":
+    logger.info("Starting InsuranceAIBot server on port %s", PORT)
+    socketio.run(app, host="0.0.0.0", port=PORT)

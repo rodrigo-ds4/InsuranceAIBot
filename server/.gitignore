@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.env
+*.pickle
+index.json
+policy2.txt
+.DS_Store
+
+# Vector DB + embeddings cache (regenerate with python src/ingest.py)
+data/chroma/
+data/models/
