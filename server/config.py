@@ -37,4 +37,4 @@ MEMORY_SHORT_WINDOW = int(os.getenv("MEMORY_SHORT_WINDOW", "6"))
 # --- Server ---
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-insecure-change-me")
 CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "*").split(",")
-PORT = int(os.getenv("PORT", "5000"))
+PORT = int(os.getenv("PORT", "5010"))
