@@ -9,6 +9,7 @@ langchain-core>=0.3
 langchain>=0.3
 langchain-text-splitters>=0.3
 langchain-groq>=1.0
+langchain-openai>=0.1
 langchain-huggingface>=0.1
 langchain-chroma>=0.1
 # RAGAS 0.4 still imports from langchain_community.chat_models.vertexai (sunset).
@@ -21,3 +22,4 @@ sentence-transformers>=3.0
 # Evaluation
 ragas>=0.2
 datasets>=2.19
+# RAGAS faithfulness uses langchain_community.vertexai (pinned above)

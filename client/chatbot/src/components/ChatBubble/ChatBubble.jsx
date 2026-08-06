@@ -1,17 +1,11 @@
-import LoadingChat from "../LoadingChat/LoadingChat";
 import styles from "./styles.module.scss";
 
-const ChatBubble = ({ content , role = "chatbot" }) => {
+const ChatBubble = ({ content, role = "bot" }) => {
+  const isUser = role === "user";
   return (
-    <div className={role === "chatbot" ? styles.bubble_chatbot : styles.bubble_user}>
-      <div
-        className={
-          role === "chatbot"
-            ? styles.bubble_chatbot_wrap
-            : styles.bubble_user_wrap
-        }
-      >
-        {content ? <p>{content}</p> : <LoadingChat />}
+    <div className={isUser ? styles.user : styles.bot}>
+      <div className={isUser ? styles.userWrap : styles.botWrap}>
+        {content ? <p>{content}</p> : null}
       </div>
     </div>
   );

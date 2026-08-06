@@ -1,100 +1,85 @@
-import { useRef, useEffect, useLayoutEffect } from "react";
+import { useEffect, useRef } from "react";
 import ChatBubble from "../ChatBubble/ChatBubble";
-import SearchIcon from "../SearchIcon/SearchIcon";
-import NewPolicyIcon from "../NewPolicyIcon/NewPolicyIcon";
 import styles from "./styles.module.scss";
 
 const ChatView = ({
   options,
-  questions,
-  answers,
-  newQuestion,
-  handleChange,
-  handleClick,
-  handleOption,
-  handleNewPolicy,
-  handleSearch,
-  disabled,
+  messages,
+  draft,
+  choosingPolicy,
+  typing,
+  onDraftChange,
+  onSend,
+  onSelectPolicy,
+  onRestart,
 }) => {
-  const chatWindowRef = useRef(null);
+  const windowRef = useRef(null);
 
-  const scrollToBottom = () => {
-    if (chatWindowRef.current) {
-      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
+  useEffect(() => {
+    const el = windowRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [messages, typing]);
+
+  const handleKey = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      onSend();
     }
   };
 
-  useLayoutEffect(() => {
-    scrollToBottom();
-  }, []);
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [questions, answers]);
-
   return (
-    <div className={styles.chat}>
-      <div className={styles.chat_wrap}>
-        <div className={styles.chat_actions}>
-          <h1>Chatbot</h1>
+    <div className={styles.window}>
+      <header className={styles.header}>
+        <div className={styles.brand}>
+          <span className={styles.avatar}>N</span>
           <div>
-            <button
-              name="New Policy"
-              className={styles.chat_actions_button}
-              onClick={handleNewPolicy}
-            >
-              <NewPolicyIcon />
-            </button>
-            <button
-              name="Search in Google"
-              className={styles.chat_actions_button}
-              onClick={handleSearch}
-            >
-              <SearchIcon />
-            </button>
+            <h1>Nicolle</h1>
+            <p>Asistente de seguros</p>
           </div>
         </div>
-        <div className={styles.chat_window} ref={chatWindowRef}>
-          <ChatBubble
-            content={
-              "Hola! Soy Nicolle, la asistente virtual de Seguros. ¿En qué te puedo ayudar?"
-            }
-          />
-          {disabled && (
-            <div className={styles.chat_options}>
-              {options.map((option, i) => (
-                <button
-                  className={styles.chat_options_button}
-                  key={`option${i}`}
-                  onClick={() => handleOption(option.name, option.code)}
-                >
-                  {option.name}
-                </button>
-              ))}
-            </div>
-          )}
-          {questions.map((question, i) => (
-            <div key={`answer${i}`}>
-              <ChatBubble role="user" content={question} />
-              <ChatBubble content={answers[i]} />
-            </div>
-          ))}
-        </div>
-        <div className={styles.chat_field}>
-          <input
-            type="text"
-            onChange={(e) => handleChange(e)}
-            value={newQuestion}
-            disabled={disabled ? "disabled" : ""}
-          />
-          <input
-            type="button"
-            onClick={handleClick}
-            value="⌲"
-            disabled={disabled ? "disabled" : ""}
-          />
-        </div>
-      </div>
+        {!choosingPolicy && (
+          <button className={styles.restart} onClick={onRestart} title="Reiniciar">
+            Reiniciar
+          </button>
+        )}
+      </header>
+
+      <main className={styles.thread} ref={windowRef}>
+        {messages.map((m) => (
+          <ChatBubble key={m.id} role={m.role} content={m.content} />
+        ))}
+
+        {choosingPolicy && !typing && (
+          <div className={styles.chips}>
+            <p className={styles.hint}>Pólizas disponibles</p>
+            {options.map((opt) => (
+              <button
+                key={opt.code}
+                className={styles.chip}
+                onClick={() => onSelectPolicy(opt.code)}
+              >
+                {opt.name}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {typing && <div className={styles.typing}><span /><span /><span /></div>}
+      </main>
+
+      <footer className={styles.composer}>
+        <input
+          type="text"
+          value={draft}
+          placeholder="Hacé una pregunta sobre la póliza…"
+          disabled={choosingPolicy}
+          onChange={(e) => onDraftChange(e.target.value)}
+          onKeyDown={handleKey}
+        />
+        <button disabled={choosingPolicy || !draft.trim()} onClick={onSend}>
+          Enviar
+        </button>
+      </footer>
     </div>
   );
 };

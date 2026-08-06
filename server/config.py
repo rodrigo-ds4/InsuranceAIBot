@@ -10,6 +10,11 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 LLM_MODEL = os.getenv("LLM_MODEL", "llama-3.3-70b-versatile")
 EVAL_MODEL = os.getenv("EVAL_MODEL", "llama-3.1-8b-instant")
 
+# --- LLM fallback (OpenRouter, OpenAI-compatible API) ---
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "")
+OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "meta-llama/llama-3.3-70b-instruct:free")
+OPENROUTER_BASE_URL = os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
+
 # --- Embeddings (HuggingFace, local & free) ---
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2")
 
