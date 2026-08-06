@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: insuranceaibot
+    runtime: docker
+    repo: https://github.com/rodrigo-ds4/InsuranceAIBot
+    plan: free
+    dockerfilePath: server/Dockerfile
+    healthCheckPath: /
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
+      - key: OPENROUTER_API_KEY
+        value: ""
+      - key: LLM_MODEL
+        value: llama-3.3-70b-versatile
+      - key: EVAL_MODEL
+        value: llama-3.1-8b-instant
+      - key: OPENROUTER_MODEL
+        value: openai/gpt-oss-20b:free
+      - key: CORS_ALLOWED_ORIGINS
+        value: "*"

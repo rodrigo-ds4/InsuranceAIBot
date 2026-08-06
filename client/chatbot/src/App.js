@@ -2,7 +2,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 import ChatView from "./components/ChatView/ChatView";
 
-const ENDPOINT = "http://127.0.0.1:5000";
+const ENDPOINT =
+  process.env.REACT_APP_ENDPOINT || "http://127.0.0.1:5000";
 
 const INSURANCE_OPTIONS = [
   { name: "Accidentes Personales / Reembolso Gastos Médicos", code: "POL120190177" },
